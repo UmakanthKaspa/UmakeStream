@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import LoginPage from "./pages/LoginPage";
-import HomePage from "./pages/HomePage";
+import Home from "./Components/Home";
 import SignupPage from "./pages/SignupPage";
 
 
@@ -12,7 +12,7 @@ export default function App() {
         <Route exact path="/login" element={<LoginPage />} />
         <Route exact path="/signup" element={<SignupPage />} />
        
-        <Route exact path="/" element={<HomePage />} />
+        <Route exact path="/" element={<Home />} />
       </Routes>
     </BrowserRouter>
   );
