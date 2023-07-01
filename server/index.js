@@ -10,8 +10,8 @@ const port = 5000;
 
 const connection = mysql.createConnection({
   host: 'localhost',
-  user: 'root',
-  password: 'root',
+  user: '####',
+  password: '####',
   database: 'umakestream',
 });
 
