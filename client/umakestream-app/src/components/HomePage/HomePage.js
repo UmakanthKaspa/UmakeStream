@@ -11,7 +11,7 @@ const Home = () => {
   const fetchData = async () => {
     try {
       const jwtToken = Cookies.get('jwt_token')
-      const response = await fetch('http://localhost:5000/api/home', {
+      const response = await fetch('http://localhost:5000/api/now_playing', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
