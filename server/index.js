@@ -10,8 +10,8 @@ const port = 5000;
 
 const connection = mysql.createConnection({
   host: 'localhost',
-  user: '####',
-  password: '####',
+  user: "root",
+  password: "root",
   database: 'umakestream',
 });
 
@@ -22,6 +22,27 @@ connection.connect((err) => {
     console.log('Connected to MySQL database!');
   }
 });
+
+// Secret key for JWT
+const secretKey = 'your-secret-key';
+
+// Middleware to verify token
+const verifyToken = (req, res, next) => {
+  const authHeader = req.headers.authorization;
+  if (authHeader) {
+    const token = authHeader.split(' ')[1];
+    jwt.verify(token, secretKey, (err, user) => {
+      if (err) {
+        return res.sendStatus(403);
+      }
+      req.user = user;
+      next();
+    });
+  } else {
+    res.sendStatus(401);
+  }
+};
+
 
 // Login API
 app.post('/login', (req, res) => {
@@ -44,7 +65,7 @@ app.post('/login', (req, res) => {
         if (isPasswordValid) {
           // User exists and credentials are correct
           // Generate an access token
-          const token = jwt.sign({ email: user.email }, 'your-secret-key', { expiresIn: '1h' });
+          const token = jwt.sign({ email: user.email }, secretKey, { expiresIn: '1h' });
 
           // Return the access token in the response
           res.status(200).json({ message: 'Login successful.', token });
@@ -87,7 +108,7 @@ app.post('/signup', async (req, res) => {
           } else {
             // User registration successful
             // Generate an access token
-            const token = jwt.sign({ email }, 'your-secret-key', { expiresIn: '1h' });
+            const token = jwt.sign({ email }, secretKey, { expiresIn: '1h' });
 
             // Return the access token in the response
             res.status(200).json({ message: 'Signup successful.', token });
@@ -100,6 +121,13 @@ app.post('/signup', async (req, res) => {
     }
   });
 });
+
+// Home API
+app.get('/api/home', verifyToken, (req, res) => {
+  const email = req.user.email;
+  res.json({ message: `Welcome to the home page, ${email}!` });
+});
+
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);

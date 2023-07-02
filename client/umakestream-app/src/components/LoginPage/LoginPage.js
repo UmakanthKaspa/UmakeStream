@@ -1,40 +1,56 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import Cookies from 'js-cookie';
 
 const LoginPage = () => {
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     email: '',
     password: '',
   });
 
+  useEffect(() => {
+    const jwtToken = Cookies.get('jwt_token');
+    if (jwtToken !== undefined) {
+      navigate('/');
+    }
+  }, [navigate]);
+
   const handleInputChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const success = (jwtToken) => {
+    Cookies.set('jwt_token', jwtToken, { expires: 30 });
+    navigate('/');
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    fetch('http://localhost:5000/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(formData),
-    })
-      .then((response) => {
-        if (response.ok) {
-          // Login successful
-          console.log('Login successful');
-          // Redirect or perform desired actions
-        } else {
-          // Login failed
-          return response.json().then((errorData) => {
-            throw new Error(errorData.error);
-          });
-        }
-      })
-      .catch((error) => {
-        console.error('An error occurred during login:', error);
+    try {
+      const response = await fetch('http://localhost:5000/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
       });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        // Login successful
+        console.log('Login successful');
+        success(data.token);
+      } else {
+        // Login failed
+        console.log('Login failed:', data.error);
+      }
+    } catch (error) {
+      console.error('An error occurred during login:', error);
+    }
   };
 
   return (
@@ -47,7 +63,7 @@ const LoginPage = () => {
             type="email"
             id="email"
             name="email"
-            value={formData.username}
+            value={formData.email}
             onChange={handleInputChange}
           />
         </div>
