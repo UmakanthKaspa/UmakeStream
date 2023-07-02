@@ -1,8 +1,6 @@
-Certainly! Here's an example README file for your project, explaining the tools, technologies, packages used, and details about the database and user table:
+# UmakeStream
 
-# Project Name
-
-The project is a web application that provides user authentication functionality using a Node.js backend with Express, MySQL for database management, and React for the frontend.
+The project is a web application that provides user authentication and authorization functionality using a Node.js backend with Express, MySQL for database management, and React for the frontend.
 
 ## Tools and Technologies Used
 
@@ -22,7 +20,7 @@ The project is a web application that provides user authentication functionality
 - jsonwebtoken: "^8.5.1"
 - cors: "^2.8.5"
 
-These packages were chosen because they are widely used and have good community support for building robust and secure web applications with user authentication.
+These packages were chosen because they are widely used and have good community support for building robust and secure web applications with user authentication and authorization.
 
 ## Database Details
 
@@ -30,16 +28,16 @@ The project uses MySQL as the database management system to store user informati
 
 ```sql
 CREATE TABLE users (
-  id INT AUTO_INCREMENT PRIMARY KEY,  username VARCHAR(255) NOT NULL,
-
-    username VARCHAR(255),
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  username VARCHAR(255) NOT NULL,
   email VARCHAR(255) NOT NULL,
   password VARCHAR(255) NOT NULL
 );
 ```
 
-The `users` table has three columns:
+The `users` table has four columns:
 - `id`: An auto-incrementing integer column used as the primary key.
+- `username`: A VARCHAR column to store the user's username.
 - `email`: A VARCHAR column to store the user's email.
 - `password`: A VARCHAR column to store the hashed password.
 
@@ -66,9 +64,31 @@ To run the project locally:
 - If the login is successful, you will receive an access token.
 - Use the access token for further authenticated requests to the server.
 
-## Contributing
+Certainly! Here's the combined section for the README file that includes information about how the client-side handles authentication and authorization using JSON Web Tokens (JWT) stored in cookies:
 
-Contributions are welcome! If you find any issues or have suggestions for improvements, please open an issue or submit a pull request.
+## Authentication and Authorization
+
+The authentication and authorization flow in this project involves the use of JSON Web Tokens (JWT) for securely transmitting user identity information between the client and the server. The server-side uses bcrypt to securely hash and store user passwords in the database.
+
+Here's how the authentication and authorization process works:
+
+- When a user logs in, the server compares the provided password with the hashed password from the database. If the passwords match, the server generates a JWT containing the user's email as a payload.
+
+- The server sets an HTTP-only cookie in the response containing the JWT. The HTTP-only attribute ensures that the cookie cannot be accessed by client-side JavaScript code, enhancing security.
+
+- On the client-side, the JWT is stored in a cookie using the browser's built-in cookie storage capabilities. This storage mechanism ensures that the cookie is securely managed and automatically included in subsequent requests to the same server.
+
+- To access protected routes on the server, the client should include the JWT in the Authorization header of each request as a Bearer token. The client-side code is responsible for extracting the JWT from the cookie and including it in the request headers.
+
+- The server receives the request and verifies the JWT's authenticity and validity. If the token is valid and not expired, the server grants access to the requested protected resource. If the token is invalid or expired, the server responds with an appropriate error status code.
+
+By storing the JWT in an HTTP-only cookie, the client-side code ensures the security and integrity of the token. The cookie is automatically sent with each request to the server, eliminating the need for the client to manually include the token in every request.
+
+It's important to note that the client-side code must handle cookie storage securely, considering aspects such as same-site and secure attributes, to prevent cross-site scripting (XSS) attacks and unauthorized access to the token.
+
+The project also uses bcrypt to securely hash and store user passwords in the database. This ensures that user passwords are not stored in plain text and are protected against unauthorized access.
+
+Feel free to update and customize this section based on your specific project's implementation details and any additional information you want to provide.
 
 ## License
 
