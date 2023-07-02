@@ -3,8 +3,8 @@ const mysql = require('mysql');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const app = express();
-app.use(express.json());
 const cors = require('cors');
+const fetch = require('node-fetch');
 app.use(cors());
 const port = 5000;
 
@@ -128,6 +128,28 @@ app.get('/api/home', verifyToken, (req, res) => {
   res.json({ message: `Welcome to the home page, ${email}!` });
 });
 
+// Home API
+app.get('/api/now_playing', verifyToken, (req, res) => {
+  const email = req.user.email;
+
+const url = 'https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=1';
+const options = {
+  method: 'GET',
+  headers: {
+    accept: 'application/json',
+    Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI2ZjI3NmM0N2ZmMzYyMzM4YmQyMzIxYWI3NjNmMjk5NSIsInN1YiI6IjYzZWM4NDUzNjk5ZmI3MDA5ZTNkNWI3OSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.nDzMFBeptzEBosro_izk2crkcTPms8XdtjifjTc3W70'
+  }
+};
+
+fetch(url, options)
+  .then(res => res.json())
+  .then(json => {
+    // Process the fetched data here
+    res.json({ message: json.results });
+  })
+  .catch(err => console.error('error:' + err));
+
+});
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
