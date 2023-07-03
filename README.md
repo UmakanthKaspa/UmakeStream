@@ -1,7 +1,12 @@
-Welcome to UmakeStream, the coding playground where I, a fun-loving fresher, am on a mission to conquer the Netflix universe, one clone at a time! 🚀🎥📺
+<h1 style="font-size: 32px; font-weight: bold; color: #FF5500; text-align: center;">Welcome to UmakeStream</h1>
 
-While the world Netflix-and-chills, I'm here to add a unique twist to my weekends. Instead of simply watching, I'm taking the leap to clone it. With every line of code, I'm diving deeper into the world of full-stack development, enhancing my skills, and embracing the joy of creativity. 🚀🎥📺Who needs to watch movies when you can have a blast with code, right? 💻✨
-Disclaimer: No Netflix subscriptions were harmed in the making of this project. 😉
+<p style="font-style: italic; margin: 20px 0; color: #555555; text-align: center;">The coding playground where I, a fun-loving fresher, am on a mission to refresh my skills in <strong>Node.js</strong>, <strong>React</strong>, and <strong>MySQL</strong> while having a blast building a practice project inspired by the magic of Netflix! 🚀💻🎬</p>
+
+<p style="font-style: italic; margin: 10px 0; color: #555555; text-align: center;">While the world Netflix-and-chills, I'm here to add a unique twist to my weekends. Instead of simply watching, I'm taking the leap to clone it. With every line of code, I'm diving deeper into the world of full-stack development, enhancing my skills, and embracing the joy of creativity.</p>
+
+<div style="background-color: #F8F8F8; padding: 20px; border-radius: 5px;">
+    <pre style="font-family: monospace;">🚀🎥📺 Who needs to watch movies when you can have a blast with code, right? 💻✨</pre>
+</div>
 
 ## Project Description
 
