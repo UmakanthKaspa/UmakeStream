@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 
 import './Poster.css';
+import Header from '../Header/Header';
 
 const RequestStatus = {
   FAILURE: 'failure',
@@ -63,6 +64,7 @@ const Poster = () => {
       case RequestStatus.SUCCESS:
         return (
           <div className="home_poster">
+            <Header/>
             <div
               className="poster_image"
               style={{
