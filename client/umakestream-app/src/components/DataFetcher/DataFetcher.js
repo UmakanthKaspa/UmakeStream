@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import Cookies from 'js-cookie';
 import CustomLoader from '../CustomLoader/CustomLoader';
-import ItemCard from '../ItemCard/ItemCard'
+import MovieSlider from '../MovieSlider/MovieSlider'
 
 const RequestStatus = {
   FAILURE: 'failure',
@@ -44,7 +44,7 @@ const DataFetcher = ({ url }) => {
     switch (loading) {
       case RequestStatus.SUCCESS:
         return  <div>
-                 <ItemCard moviesList={data.message} />
+                 <MovieSlider data={data.message} />
 
       </div>;
       case RequestStatus.IN_PROGRESS:
