@@ -149,9 +149,83 @@ fetch(url, options)
   .catch(err => console.error('error:' + err));
 });
 
-// trending API
-app.get('/api/trending', verifyToken, (req, res) => {
+// trending-movies API
+app.get('/api/trending-movies', verifyToken, (req, res) => {
   const url = 'https://api.themoviedb.org/3/trending/movie/day?language=en-US';
+  const options = {
+    method: 'GET',
+    headers: {
+      accept: 'application/json',
+      Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI2ZjI3NmM0N2ZmMzYyMzM4YmQyMzIxYWI3NjNmMjk5NSIsInN1YiI6IjYzZWM4NDUzNjk5ZmI3MDA5ZTNkNWI3OSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.nDzMFBeptzEBosro_izk2crkcTPms8XdtjifjTc3W70'
+    }
+  };
+  fetch(url, options)
+    .then(res => res.json())
+    .then(json => {
+      // Process the fetched data here
+      res.json({ message: json.results });
+    })
+    .catch(err => console.error('error:' + err));
+  });
+
+
+    //  popular-movies API
+app.get('/api/popular-tv', verifyToken, (req, res) => {
+  const url = 'https://api.themoviedb.org/3/tv/popular?language=en-US&page=1';
+  const options = {
+    method: 'GET',
+    headers: {
+      accept: 'application/json',
+      Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI2ZjI3NmM0N2ZmMzYyMzM4YmQyMzIxYWI3NjNmMjk5NSIsInN1YiI6IjYzZWM4NDUzNjk5ZmI3MDA5ZTNkNWI3OSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.nDzMFBeptzEBosro_izk2crkcTPms8XdtjifjTc3W70'
+    }
+  };
+  fetch(url, options)
+    .then(res => res.json())
+    .then(json => {
+      // Process the fetched data here
+      res.json({ message: json.results });
+    })
+    .catch(err => console.error('error:' + err));
+  });
+      //  popular-movies API
+app.get('/api/upcoming-movies', verifyToken, (req, res) => {
+  const url = 'https://api.themoviedb.org/3/movie/upcoming';
+  const options = {
+    method: 'GET',
+    headers: {
+      accept: 'application/json',
+      Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI2ZjI3NmM0N2ZmMzYyMzM4YmQyMzIxYWI3NjNmMjk5NSIsInN1YiI6IjYzZWM4NDUzNjk5ZmI3MDA5ZTNkNWI3OSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.nDzMFBeptzEBosro_izk2crkcTPms8XdtjifjTc3W70'
+    }
+  };
+  fetch(url, options)
+    .then(res => res.json())
+    .then(json => {
+      // Process the fetched data here
+      res.json({ message: json.results });
+    })
+    .catch(err => console.error('error:' + err));
+  });
+      //  popular-movies API
+app.get('/api/top-rated-movies', verifyToken, (req, res) => {
+  const url = 'https://api.themoviedb.org/3/movie/top_rated';
+  const options = {
+    method: 'GET',
+    headers: {
+      accept: 'application/json',
+      Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI2ZjI3NmM0N2ZmMzYyMzM4YmQyMzIxYWI3NjNmMjk5NSIsInN1YiI6IjYzZWM4NDUzNjk5ZmI3MDA5ZTNkNWI3OSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.nDzMFBeptzEBosro_izk2crkcTPms8XdtjifjTc3W70'
+    }
+  };
+  fetch(url, options)
+    .then(res => res.json())
+    .then(json => {
+      // Process the fetched data here
+      res.json({ message: json.results });
+    })
+    .catch(err => console.error('error:' + err));
+  });
+      //  popular-movies API
+app.get('/api/top-rated-tv', verifyToken, (req, res) => {
+  const url = 'https://api.themoviedb.org/3/tv/top_rated?language=en-US&page=1';
   const options = {
     method: 'GET',
     headers: {

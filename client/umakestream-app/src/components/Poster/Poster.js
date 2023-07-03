@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
-import CustomLoader from '../../components/CustomLoader/CustomLoader';
+import CustomLoader from '../CustomLoader/CustomLoader';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlay, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 
-import './HomePage.css';
+import './Poster.css';
 
 const RequestStatus = {
   FAILURE: 'failure',
@@ -10,13 +12,13 @@ const RequestStatus = {
   IN_PROGRESS: 'inProgress',
 };
 
-const Home = () => {
+const Poster = () => {
   const [poster, setPoster] = useState({});
   const [posterStatus, setPosterStatus] = useState('');
 
   useEffect(() => {
     fetchPoster();
-  }, []); // Empty dependency array
+  }, []); 
 
   const fetchPoster = async () => {
     setPosterStatus(RequestStatus.IN_PROGRESS);
@@ -70,8 +72,15 @@ const Home = () => {
               <div className="poster_content">
                 <div className="poster_title">{title}</div>
                 <div className="poster_overview">{overview}</div>
-                <div className="poster_button">
-                  <button type="button">Play</button>
+                <div className="poster_buttons">
+                  <button type="button" className="play_button">
+                    <FontAwesomeIcon icon={faPlay} className="button_icon" />
+                    Play
+                  </button>
+                  <button type="button" className="info_button">
+                    <FontAwesomeIcon icon={faInfoCircle} className="button_icon" />
+                    More Info
+                  </button>
                 </div>
               </div>
             </div>
@@ -95,11 +104,8 @@ const Home = () => {
   return (
     <div className="home_container">
       {renderPoster()}
-      <div className="movie_slider">
-        {/* Add your movie slider content here */}
-      </div>
     </div>
   );
 };
 
-export default Home;
+export default Poster;
