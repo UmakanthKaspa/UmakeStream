@@ -7,8 +7,12 @@ body {
   -moz-osx-font-smoothing: grayscale;
   color: white;
   background-color: #141414;
+  overflow-x: hidden;
 }
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+::-webkit-scrollbar {
+display: none;
 }
