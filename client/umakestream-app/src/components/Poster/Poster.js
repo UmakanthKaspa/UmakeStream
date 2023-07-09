@@ -77,11 +77,11 @@ const Poster = () => {
                 <div className="poster_buttons">
                   <button type="button" className="play_button">
                     <FontAwesomeIcon icon={faPlay} className="button_icon" />
-                    Play
+                     Play
                   </button>
                   <button type="button" className="info_button">
                     <FontAwesomeIcon icon={faInfoCircle} className="button_icon" />
-                    More Info
+                     More Info
                   </button>
                 </div>
               </div>

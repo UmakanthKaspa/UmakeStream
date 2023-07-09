@@ -74,7 +74,7 @@ const MovieSlider = props => {
               </Link>
               {isHovered && (
                 <div className="movie_details">
-                  <h3>{movie.title}</h3>
+  <h3>{movie.name || movie.title}</h3>
                   <div className="icons flex j-between">
                     <div className="controls flex">
                       <IoPlayCircleSharp title="Play" />
