@@ -67,7 +67,7 @@ app.post('/login', (req, res) => {
         if (isPasswordValid) {
           // User exists and credentials are correct
           // Generate an access token
-          const token = jwt.sign({ email: user.email }, secretKey, { expiresIn: '1h' });
+          const token = jwt.sign({ email: user.email }, secretKey);
 
           // Return the access token in the response
           res.status(200).json({ message: 'Login successful.', token });
@@ -110,7 +110,7 @@ app.post('/signup', async (req, res) => {
           } else {
             // User registration successful
             // Generate an access token
-            const token = jwt.sign({ email }, secretKey, { expiresIn: '1h' });
+            const token = jwt.sign({ email }, secretKey);
 
             // Return the access token in the response
             res.status(200).json({ message: 'Signup successful.', token });
@@ -130,48 +130,78 @@ app.get('/api/home', verifyToken, (req, res) => {
   res.json({ message: `Welcome to the home page, ${email}!` });
 });
 
-// Poster API
-app.get('/api/now_playing', verifyToken, (req, res) => {
-const url = 'https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=1';
-const options = {
-  method: 'GET',
-  headers: {
-    accept: 'application/json',
-    Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI2ZjI3NmM0N2ZmMzYyMzM4YmQyMzIxYWI3NjNmMjk5NSIsInN1YiI6IjYzZWM4NDUzNjk5ZmI3MDA5ZTNkNWI3OSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.nDzMFBeptzEBosro_izk2crkcTPms8XdtjifjTc3W70'
-  }
+// Reusable function to fetch data from the API
+const fetchData = (url, options, res) => {
+  fetch(url, options)
+    .then((response) => response.json())
+    .then((json) => {
+      res.json({ message: json.results });
+    })
+    .catch((err) => {
+      console.error('error:' + err);
+      res.status(500).json({ error: 'An unexpected error occurred.' });
+    });
 };
-fetch(url, options)
-  .then(res => res.json())
-  .then(json => {
-    // Process the fetched data here
-    res.json({ message: json.results });
-  })
-  .catch(err => console.error('error:' + err));
-});
 
-// trending-movies API
-app.get('/api/trending-movies', verifyToken, (req, res) => {
-  const url = 'https://api.themoviedb.org/3/trending/movie/day?language=en-US';
-  const options = {
-    method: 'GET',
-    headers: {
-      accept: 'application/json',
-      Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI2ZjI3NmM0N2ZmMzYyMzM4YmQyMzIxYWI3NjNmMjk5NSIsInN1YiI6IjYzZWM4NDUzNjk5ZmI3MDA5ZTNkNWI3OSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.nDzMFBeptzEBosro_izk2crkcTPms8XdtjifjTc3W70'
+// Reusable function to handle API routes
+const handleAPIRoute = (app, route, endpoint) => {
+  app.get(route, verifyToken, (req, res) => {
+    const genre = req.query.genre;
+    let url = endpoint;
+
+    if (genre) {
+      url += `?with_genres=${genre}`;
     }
-  };
-  fetch(url, options)
-    .then(res => res.json())
-    .then(json => {
-      // Process the fetched data here
-      res.json({ message: json.results });
-    })
-    .catch(err => console.error('error:' + err));
+
+    const options = {
+      method: 'GET',
+      headers: {
+        accept: 'application/json',
+        Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI2ZjI3NmM0N2ZmMzYyMzM4YmQyMzIxYWI3NjNmMjk5NSIsInN1YiI6IjYzZWM4NDUzNjk5ZmI3MDA5ZTNkNWI3OSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.nDzMFBeptzEBosro_izk2crkcTPms8XdtjifjTc3W70'
+      }
+    };
+
+    fetchData(url, options, res);
   });
+};
+//movies
+// Now Playing API
+handleAPIRoute(app, '/api/now_playing', 'https://api.themoviedb.org/3/movie/now_playing');
+
+// Trending Movies API
+handleAPIRoute(app, '/api/trending-movies', 'https://api.themoviedb.org/3/trending/movie/day');
 
 
-    //  popular-movies API
-app.get('/api/popular-tv', verifyToken, (req, res) => {
-  const url = 'https://api.themoviedb.org/3/tv/popular?language=en-US&page=1';
+// Upcoming Movies API
+handleAPIRoute(app, '/api/upcoming-movies', 'https://api.themoviedb.org/3/movie/upcoming');
+
+// Top Rated Movies API
+handleAPIRoute(app, '/api/top-rated-movies', 'https://api.themoviedb.org/3/movie/top_rated');
+// Popular Movies API
+handleAPIRoute(app, '/api/popular-movies', 'https://api.themoviedb.org/3/movie/popular');
+
+//tv shows
+// airing_today TV Shows API
+handleAPIRoute(app, '/api/airing_today-tv', 'https://api.themoviedb.org/3/tv/airing_today');
+// // on_the_air TV Shows API
+// handleAPIRoute(app, '/api/on_the_air-tv', 'https://api.themoviedb.org/3/tv/on_the_air');
+
+
+// Popular TV Shows API
+handleAPIRoute(app, '/api/popular-tv', 'https://api.themoviedb.org/3/tv/popular');
+// Top Rated TV Shows API
+handleAPIRoute(app, '/api/top-rated-tv', 'https://api.themoviedb.org/3/tv/top_rated');
+
+// trending TV Shows API
+handleAPIRoute(app, '/api/trending-tv', 'https://api.themoviedb.org/3/trending/tv/week');
+
+
+
+
+app.get('/api/genere', verifyToken, (req, res) => {
+  const type = req.query.type;
+
+  const url = `https://api.themoviedb.org/3/genre/${type}/list?language=en`;
   const options = {
     method: 'GET',
     headers: {
@@ -182,66 +212,30 @@ app.get('/api/popular-tv', verifyToken, (req, res) => {
   fetch(url, options)
     .then(res => res.json())
     .then(json => {
-      // Process the fetched data here
-      res.json({ message: json.results });
-    })
-    .catch(err => console.error('error:' + err));
-  });
-      //  popular-movies API
-app.get('/api/upcoming-movies', verifyToken, (req, res) => {
-  const url = 'https://api.themoviedb.org/3/movie/upcoming';
-  const options = {
-    method: 'GET',
-    headers: {
-      accept: 'application/json',
-      Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI2ZjI3NmM0N2ZmMzYyMzM4YmQyMzIxYWI3NjNmMjk5NSIsInN1YiI6IjYzZWM4NDUzNjk5ZmI3MDA5ZTNkNWI3OSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.nDzMFBeptzEBosro_izk2crkcTPms8XdtjifjTc3W70'
-    }
-  };
-  fetch(url, options)
-    .then(res => res.json())
-    .then(json => {
-      // Process the fetched data here
-      res.json({ message: json.results });
-    })
-    .catch(err => console.error('error:' + err));
-  });
-      //  popular-movies API
-app.get('/api/top-rated-movies', verifyToken, (req, res) => {
-  const url = 'https://api.themoviedb.org/3/movie/top_rated';
-  const options = {
-    method: 'GET',
-    headers: {
-      accept: 'application/json',
-      Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI2ZjI3NmM0N2ZmMzYyMzM4YmQyMzIxYWI3NjNmMjk5NSIsInN1YiI6IjYzZWM4NDUzNjk5ZmI3MDA5ZTNkNWI3OSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.nDzMFBeptzEBosro_izk2crkcTPms8XdtjifjTc3W70'
-    }
-  };
-  fetch(url, options)
-    .then(res => res.json())
-    .then(json => {
-      // Process the fetched data here
-      res.json({ message: json.results });
-    })
-    .catch(err => console.error('error:' + err));
-  });
-      //  popular-movies API
-app.get('/api/top-rated-tv', verifyToken, (req, res) => {
-  const url = 'https://api.themoviedb.org/3/tv/top_rated?language=en-US&page=1';
-  const options = {
-    method: 'GET',
-    headers: {
-      accept: 'application/json',
-      Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI2ZjI3NmM0N2ZmMzYyMzM4YmQyMzIxYWI3NjNmMjk5NSIsInN1YiI6IjYzZWM4NDUzNjk5ZmI3MDA5ZTNkNWI3OSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.nDzMFBeptzEBosro_izk2crkcTPms8XdtjifjTc3W70'
-    }
-  };
-  fetch(url, options)
-    .then(res => res.json())
-    .then(json => {
-      // Process the fetched data here
-      res.json({ message: json.results });
+      res.json({ message: json.genres });
     })
     .catch(err => console.error('error:' + err));
   });
 
+
+  app.get('/api/moviedetails', verifyToken, (req, res) => {
+    const id = req.query.id;
+  
+    const url = `https://api.themoviedb.org/3/movie/${id}`;
+    const options = {
+      method: 'GET',
+      headers: {
+        accept: 'application/json',
+        Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI2ZjI3NmM0N2ZmMzYyMzM4YmQyMzIxYWI3NjNmMjk5NSIsInN1YiI6IjYzZWM4NDUzNjk5ZmI3MDA5ZTNkNWI3OSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.nDzMFBeptzEBosro_izk2crkcTPms8XdtjifjTc3W70'
+      }
+    };
+    fetch(url, options)
+      .then(res => res.json())
+      .then(json => {
+        res.json({ message: json });
+      })
+      .catch(err => console.error('error:' + err));
+    });
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });

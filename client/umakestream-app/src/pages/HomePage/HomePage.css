@@ -1,1 +1,20 @@
 
+.heading {
+    margin-top: 30px;
+    margin-bottom: 10px;
+    font-size: 24px;
+    font-weight: bold;
+    padding-left: 40px;
+  }
+  
+ 
+  
+  .dataFetcherContainer > div {
+    flex: 0 0 auto;
+    margin-right: 15px;
+  }
+  
+  .dataFetcherContainer > div:last-child {
+    margin-right: 0;
+  }
+  

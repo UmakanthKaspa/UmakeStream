@@ -1,15 +1,65 @@
 .signup-container {
   height: 100vh;
-  width: 100vw;
-  background-image: url(../../assets/auth-background.jpg);
   background-size: cover;
-  overflow: hidden;
+  background-position: center;
   display: flex;
   justify-content: center;
   align-items: center;
   text-align: center;
-  }
-  
-  h1 {
-    font-size: 36px;
-  }
+}
+
+.signup-card {
+  background-color: rgba(0, 0, 0, 0.7);
+  padding: 40px;
+  border-radius: 5px;
+  max-width: 400px;
+  width: 90%;
+  color: #fff;
+}
+
+h1 {
+  font-size: 24px;
+  margin-bottom: 30px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 10px;
+  border-radius: 5px;
+  border: none;
+  background-color: #f0f0f0;
+  color: #000;
+}
+
+.signup-button {
+  background-color: #e50914;
+  color: #fff;
+  padding: 12px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  width: 100%;
+  transition: background-color 0.3s ease;
+}
+
+.signup-button:hover {
+  background-color: #c90812;
+}
+
+p {
+  margin-bottom: 10px;
+}
+
+a {
+  color: #fff;
+  text-decoration: underline;
+}
+
+.terms-of-use {
+  font-size: 12px;
+}

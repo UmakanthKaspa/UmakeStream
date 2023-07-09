@@ -48,7 +48,7 @@ const DataFetcher = ({ url }) => {
 
       </div>;
       case RequestStatus.IN_PROGRESS:
-        return <CustomLoader height="85vh" width="100vw" />;
+        return <CustomLoader height="150px" width="100vw" />;
       case RequestStatus.FAILURE:
         return (
           <div>

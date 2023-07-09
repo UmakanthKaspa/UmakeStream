@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import Cookies from 'js-cookie';
+import backgroundImage from '../../assets/auth-background.jpg';
+import Navigation from '../../components/Navigation/Navigation'
+import './LoginPage.css';
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -54,31 +57,42 @@ const LoginPage = () => {
   };
 
   return (
-    <div>
-      <h2>Login</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="email">Email:</label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            value={formData.email}
-            onChange={handleInputChange}
-          />
+    <div className="login-container" style={{ backgroundImage: `url(${backgroundImage})` }}>
+            <Navigation />
+      <div className="login-form">
+        <h2>Login</h2>
+        <form onSubmit={handleSubmit}>
+          <div className="form-group">
+            <label htmlFor="email">Email:</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              placeholder="Enter your Email"
+
+              value={formData.email}
+              onChange={handleInputChange}
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="password">Password:</label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              placeholder="Enter your Password"
+
+              value={formData.password}
+              onChange={handleInputChange}
+            />
+          </div>
+          <button type="submit" className="login-button">Login</button>
+        </form>
+        <div className="signup-link-container">
+          <span className="signup-link-text">Don't have an account?</span>
+          <Link to="/signup" className="signup-link">Sign Up</Link>
         </div>
-        <div>
-          <label htmlFor="password">Password:</label>
-          <input
-            type="password"
-            id="password"
-            name="password"
-            value={formData.password}
-            onChange={handleInputChange}
-          />
-        </div>
-        <button type="submit">Login</button>
-      </form>
+      </div>
     </div>
   );
 };

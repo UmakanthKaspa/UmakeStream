@@ -1,14 +1,17 @@
-import React, { useState, useEffect } from "react";
-import Cookies from 'js-cookie'
+import React, { useState, useEffect } from 'react';
+import Cookies from 'js-cookie';
 import { useNavigate } from 'react-router-dom';
-import "./SignupPage.css";
+import backgroundImage from '../../assets/auth-background.jpg';
+import Navigation from '../../components/Navigation/Navigation'
+
+import './SignupPage.css';
 
 const SignupPage = () => {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
-    email: "",
-    password: "",
+    email: '',
+    password: '',
   });
 
   useEffect(() => {
@@ -31,59 +34,65 @@ const SignupPage = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch("http://localhost:5000/signup", {
-        method: "POST",
+      const response = await fetch('http://localhost:5000/signup', {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify(formData),
       });
       const data = await response.json();
       if (response.ok) {
         // Signup successful
-        console.log("Signup successful");
+        console.log('Signup successful');
         success(data.token);
       } else {
         // Signup failed
-        console.log("Signup failed:", data.error);
+        console.log('Signup failed:', data.error);
       }
     } catch (error) {
-      console.error("An error occurred during signup:", error);
+      console.error('An error occurred during signup:', error);
     }
   };
 
   return (
-    <div className="signup-container">
+    <div className="signup-container" style={{ backgroundImage: `url(${backgroundImage})` }}>
+                  <Navigation />
+
       <div className="signup-card">
-        <h1>Unlimited movies, TV</h1>
-        <h1>shows and more.</h1>
-        <h4>Watch anywhere. Cancel anytime.</h4>
+        <h1>Sign Up</h1>
         <form onSubmit={handleSubmit}>
-          <div>
-            <label htmlFor="email">Email:</label>
+          <div className="form-group">
             <input
               type="email"
               id="email"
               name="email"
+              placeholder="Email"
               value={formData.email}
               onChange={handleInputChange}
             />
           </div>
-          <div>
-            <label htmlFor="password">Password:</label>
+          <div className="form-group">
             <input
               type="password"
               id="password"
               name="password"
+              placeholder="Password"
               value={formData.password}
               onChange={handleInputChange}
             />
           </div>
-          <button type="submit">Signup</button>
+          <button type="submit" className="signup-button">
+            Get Started
+          </button>
         </form>
-        <h6>
-          Ready to watch? Enter your email to create or restart membership.
-        </h6>
+        <p>
+          Already have an account? <a href="/login">Login</a>
+        </p>
+        <p className="terms-of-use">
+          This page is for demonstration purposes only. By signing up, you agree to our Terms of
+          Use and Privacy Policy.
+        </p>
       </div>
     </div>
   );
