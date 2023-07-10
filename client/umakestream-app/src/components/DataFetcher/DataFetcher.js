@@ -2,6 +2,8 @@ import React, { useEffect, useState, useCallback } from 'react';
 import Cookies from 'js-cookie';
 import CustomLoader from '../CustomLoader/CustomLoader';
 import MovieSlider from '../MovieSlider/MovieSlider'
+import FailureView from '../FailureView/FailureView'
+
 
 const RequestStatus = {
   FAILURE: 'failure',
@@ -9,7 +11,7 @@ const RequestStatus = {
   IN_PROGRESS: 'inProgress',
 };
 
-const DataFetcher = ({ url }) => {
+const DataFetcher = ({ url,detail_url }) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(RequestStatus.IN_PROGRESS);
 
@@ -40,20 +42,23 @@ const DataFetcher = ({ url }) => {
     fetchData();
   }, [fetchData]);
 
+  const tryAgain = useCallback(() => {
+    fetchData();
+  }, [fetchData]);
+  
   const renderFetchData = () => {
     switch (loading) {
       case RequestStatus.SUCCESS:
         return  <div>
-                 <MovieSlider data={data.message} />
+                 <MovieSlider data={data.message} detail_url = {detail_url} />
 
       </div>;
       case RequestStatus.IN_PROGRESS:
         return <CustomLoader height="150px" width="100vw" />;
       case RequestStatus.FAILURE:
         return (
-          <div>
-            <p>Failure</p>
-          </div>
+          <FailureView  height="150px" width="100vw" tryAgain= {tryAgain}/>
+
         );
       default:
         return null;
