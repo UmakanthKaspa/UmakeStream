@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
+import Cookies from 'js-cookie';
+
 import { FaSearch, FaUserCircle, FaSignOutAlt } from 'react-icons/fa';
 import './Header.css';
 
 const Header = () => {
   const [isFixed, setIsFixed] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const navigate = useNavigate();
 
   const handleSearchClick = () => {
     setIsSearchOpen(!isSearchOpen);
@@ -37,8 +40,8 @@ const Header = () => {
   }, []);
 
   const handleLogout = () => {
-    // Add your logout logic here
-  };
+    Cookies.remove("jwt_token")
+    navigate('/login')  };
 
   return (
     <header className={`header ${isFixed ? 'fixed' : ''}`}>

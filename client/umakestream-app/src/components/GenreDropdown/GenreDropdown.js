@@ -10,7 +10,7 @@ const GenreDropdown = ({ onSelect,type }) => {
     const fetchGenres = async () => {
       try {
         const jwtToken = Cookies.get('jwt_token');
-        const response = await fetch(`http://localhost:5000/api/genere?type=${type}`, {
+        const response = await fetch(`api/genere?type=${type}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',

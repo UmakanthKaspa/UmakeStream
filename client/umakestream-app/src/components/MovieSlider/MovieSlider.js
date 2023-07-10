@@ -40,7 +40,7 @@ const settings = {
 };
 
 const MovieSlider = props => {
-  const { data } = props;
+  const { data,detail_url } = props;
   const [hoveredMovie, setHoveredMovie] = useState(null);
 
   const handleMovieHover = movie => {
@@ -63,7 +63,7 @@ const MovieSlider = props => {
 
           return (
             <li key={movie.id}>
-              <Link to={`/movies/${movie.id}`}>
+              <Link to={`/details${detail_url}-${movie.id}`}>
                 <img
                   className={`slider_image ${isHovered ? 'hovered' : ''}`}
                   src={`https://image.tmdb.org/t/p/w500${movie.backdrop_path}`}

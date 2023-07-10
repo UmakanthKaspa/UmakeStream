@@ -22,19 +22,19 @@ export default function HomePage() {
       <Poster />
 
       <h2 className="heading">Trending Movies</h2>
-        <DataFetcher url="http://localhost:5000/api/trending-movies" />
+        <DataFetcher url="api/trending-movies" detail_url = "/movie"/>
 
       <h2 className="heading">Popular TV Shows</h2>
-        <DataFetcher url="http://localhost:5000/api/popular-tv" />
+        <DataFetcher url="api/popular-tv"  detail_url = "/tv"/>
 
-      <h2 className="heading">Upcoming Movies</h2>
-        <DataFetcher url="http://localhost:5000/api/upcoming-movies" />
+      <h2 className="heading">Upcoming Movies </h2>
+        <DataFetcher url="api/upcoming-movies"  detail_url = "/movie" />
 
       <h2 className="heading">Top Rated Movies</h2>
-        <DataFetcher url="http://localhost:5000/api/top-rated-movies" />
+        <DataFetcher url="api/top-rated-movies"  detail_url = "/movie" />
 
       <h2 className="heading">Top Rated TV Shows</h2>
-        <DataFetcher url="http://localhost:5000/api/top-rated-tv" />
+        <DataFetcher url="api/top-rated-tv"  detail_url = "/tv"/>
       <Footer />
     </>
   );

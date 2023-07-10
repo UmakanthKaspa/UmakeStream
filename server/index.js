@@ -218,24 +218,37 @@ app.get('/api/genere', verifyToken, (req, res) => {
   });
 
 
-  app.get('/api/moviedetails', verifyToken, (req, res) => {
-    const id = req.query.id;
+  app.get('/api/moviedetails', verifyToken, async (req, res) => {
+    try {
+      const id = req.query.id;
+      const mediaType = id.split("-")[0];
+      const mediaId = id.split("-")[1];
+      const url = `https://api.themoviedb.org/3/${mediaType}/${mediaId}`;
+      const options = {
+        method: 'GET',
+        headers: {
+          accept: 'application/json',
+          Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI2ZjI3NmM0N2ZmMzYyMzM4YmQyMzIxYWI3NjNmMjk5NSIsInN1YiI6IjYzZWM4NDUzNjk5ZmI3MDA5ZTNkNWI3OSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.nDzMFBeptzEBosro_izk2crkcTPms8XdtjifjTc3W70'
+        }
+      };
   
-    const url = `https://api.themoviedb.org/3/movie/${id}`;
-    const options = {
-      method: 'GET',
-      headers: {
-        accept: 'application/json',
-        Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI2ZjI3NmM0N2ZmMzYyMzM4YmQyMzIxYWI3NjNmMjk5NSIsInN1YiI6IjYzZWM4NDUzNjk5ZmI3MDA5ZTNkNWI3OSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.nDzMFBeptzEBosro_izk2crkcTPms8XdtjifjTc3W70'
-      }
-    };
-    fetch(url, options)
-      .then(res => res.json())
-      .then(json => {
-        res.json({ message: json });
-      })
-      .catch(err => console.error('error:' + err));
-    });
+      // Fetch movie or TV show details
+      const response = await fetch(url, options);
+      const details = await response.json();
+  
+      // Fetch similar movies or TV shows
+      const similarUrl = `https://api.themoviedb.org/3/${mediaType}/${mediaId}/similar`;
+      const similarResponse = await fetch(similarUrl, options);
+      const similarData = await similarResponse.json();
+      const similarResults = similarData.results;
+  
+      res.json({ message: { details, similarResults } });
+    } catch (error) {
+      console.error('Error fetching movie details:', error);
+      res.status(500).json({ error: 'An error occurred while fetching movie details.' });
+    }
+  });
+  
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });

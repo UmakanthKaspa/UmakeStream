@@ -3,7 +3,7 @@ import Cookies from 'js-cookie';
 import CustomLoader from '../CustomLoader/CustomLoader';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
-
+import FailureView from '../FailureView/FailureView'
 import './Poster.css';
 import Header from '../Header/Header';
 
@@ -21,11 +21,14 @@ const Poster = () => {
     fetchPoster();
   }, []); 
 
+  const tryAgain = ()=>{
+    fetchPoster();
+  }
   const fetchPoster = async () => {
     setPosterStatus(RequestStatus.IN_PROGRESS);
     try {
       const jwtToken = Cookies.get('jwt_token');
-      const response = await fetch('http://localhost:5000/api/now_playing', {
+      const response = await fetch('api/now_playing', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -64,7 +67,9 @@ const Poster = () => {
       case RequestStatus.SUCCESS:
         return (
           <div className="home_poster">
+
             <Header/>
+            
             <div
               className="poster_image"
               style={{
@@ -94,9 +99,7 @@ const Poster = () => {
         );
       case RequestStatus.FAILURE:
         return (
-          <div>
-            <p>Failure</p>
-          </div>
+          <FailureView  height="85vh" width="100vw" tryAgain= {tryAgain}/>
         );
       default:
         return null;
